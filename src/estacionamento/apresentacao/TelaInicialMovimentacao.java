@@ -1,4 +1,8 @@
 package estacionamento.apresentacao;
 
-public class TelaInicialMovimentacao {
+import javax.swing.*;
+
+public class TelaInicialMovimentacao extends JFrame {
+
+
 }

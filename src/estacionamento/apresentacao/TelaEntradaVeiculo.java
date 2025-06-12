@@ -1,4 +1,8 @@
 package estacionamento.apresentacao;
 
-public class TelaEntradaVeiculo {
+import javax.swing.*;
+
+public class TelaEntradaVeiculo extends JFrame {
+
+
 }
