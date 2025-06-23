@@ -2,6 +2,8 @@ package estacionamento.controle;
 
 import estacionamento.negocio.Movimentacao;
 import estacionamento.negocio.Vaga;
+import estacionamento.negocio.Veiculo;
+import estacionamento.persistencia.DAOEstacionamento;
 import estacionamento.utilitario.EstacionamentoUtil;
 
 import java.time.LocalDateTime;
@@ -20,7 +22,14 @@ public class EstacionamentoController {
             throw new VeiculoException("Placa informada invalida!");
         }
 
+        Veiculo veiculo = new Veiculo(placa, marca, modelo, cor);
 
+        Movimentacao movimentacao = new Movimentacao(veiculo, LocalDateTime.now());
+
+        DAOEstacionamento daoEstacionamento = new DAOEstacionamento();
+        daoEstacionamento.criar(movimentacao);
+
+        Vaga.entrou();
 
     }
 
