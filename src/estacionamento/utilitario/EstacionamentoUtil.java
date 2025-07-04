@@ -25,7 +25,7 @@ public class EstacionamentoUtil {
      */
     public static boolean validarPadraoPlaca(String placa) {
 
-        String padrao = "[A_Z][A_Z][A_Z]-\\d\\d\\d\\d";
+        String padrao = "[A-Z][A-Z][A-Z]-\\d\\d\\d\\d";
         Pattern p = Pattern.compile(padrao);
         Matcher m = p.matcher(placa);
 
@@ -35,6 +35,7 @@ public class EstacionamentoUtil {
 
     public static String getDataAsString(LocalDateTime dataHoraEntrada) {
 
+        return dataHoraEntrada.toString();
 
     }
 
@@ -56,7 +57,7 @@ public class EstacionamentoUtil {
         Properties prop = new Properties();
         String valor = null;
         try {
-            prop.load(new FileInputStream("/configuration.txt"));
+            prop.load(EstacionamentoUtil.class.getResourceAsStream("/configuration.txt"));
             valor = prop.getProperty(propriedade);
         } catch (IOException e) {
             assert false : "Configuracao nao carregada";

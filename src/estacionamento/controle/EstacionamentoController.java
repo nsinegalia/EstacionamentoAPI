@@ -11,8 +11,8 @@ import java.util.List;
 
 public class EstacionamentoController {
 
-    public void processarEntrada(String placa, String marca,
-                                 String modelo, String cor) throws EstacionamentoException, VeiculoException {
+    public void processarEntrada(String placa, String marca, String modelo, String cor)
+            throws EstacionamentoException, VeiculoException {
         //TODO Implementar
         if(!Vaga.temVagaLivre()){
             throw new EstacionamentoException("Estacionamento lotado!");
@@ -43,4 +43,10 @@ public class EstacionamentoController {
         return null;
     }
 
+    public int inicializarOcupadas() {
+
+        DAOEstacionamento dao = new DAOEstacionamento();
+        return dao.getOcupadas();
+
+    }
 }

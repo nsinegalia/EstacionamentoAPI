@@ -9,9 +9,12 @@ import java.lang.management.MonitorInfo;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static java.sql.DriverManager.getConnection;
 
 public class DAOEstacionamento {
 
@@ -22,7 +25,7 @@ public class DAOEstacionamento {
         Connection conexao = null;
         try {
 
-
+            conexao = getConnection();
             conexao.setAutoCommit(false);
 
             PreparedStatement stmt = conexao.prepareStatement(cmd1);
@@ -34,20 +37,20 @@ public class DAOEstacionamento {
             stmt.setString(5, EstacionamentoUtil.getDataAsString(movimentacao.getDataHoraEntrada()));
 
             stmt.execute();
-
             stmt = conexao.prepareStatement(cmd2);
             stmt.setInt(1, Vaga.ocupadas() + 1);
-
             stmt.execute();
 
             conexao.commit();
         } catch (SQLException e) {
-            conexao.rollback();
-            throw new EstacionamentoException("Erro ao registrar veiculo.");
-        }catch (SQLException e1){
-            e1.printStackTrace();
+            try {
+                e.printStackTrace();
+                conexao.rollback();
+                throw new EstacionamentoException("Erro ao registrar veiculo.");
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         }
-
     }
 
     public void atualizar(Movimentacao movimentacao) {
@@ -87,8 +90,26 @@ public class DAOEstacionamento {
                 e.printStackTrace();
             }
         }
-
     }
 
+    public int getOcupadas() {
 
+        int ocupadas = 0;
+        Connection conexao = null;
+        String cmd = EstacionamentoUtil.get("consultarOcupadas");
+        try {
+            conexao = getConnection();
+            PreparedStatement ps = conexao.prepareStatement(cmd);
+
+           ResultSet resultado = ps.executeQuery();
+           if(resultado.next()){
+               ocupadas = resultado.getInt("ocupadas");
+           }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(conexao);
+        }
+        return ocupadas;
+    }
 }
